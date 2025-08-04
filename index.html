@@ -3,25 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <base href="/" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    
+    <!-- Essential Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="Hadvika Traders - Premium B2B Ice Cream Export" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>Hadvika Traders B2B Ice Cream Export Website</title>
+    <meta name="theme-color" content="#215C4C" />
     
-    <!-- Preload critical resources -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Preload main script -->
-    <link rel="modulepreload" href="/src/main.tsx" as="script">
+    <!-- Preload critical resources -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     
-    <!-- Add this to prevent 404 errors for favicon -->
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+    <!-- Preload main script -->
+    <link rel="modulepreload" href="/src/main.tsx" as="script" crossorigin="anonymous">
+    
+    <!-- Critical CSS (optional, can be inlined) -->
+    <style>
+      /* Critical CSS for initial load */
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow-x: hidden;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      /* Add any critical styles needed for initial paint */
+    </style>
+    
+    <title>Hadvika Traders | Premium B2B Ice Cream Export</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <div style="text-align: center; padding: 2rem; font-family: Arial, sans-serif;">
+        <h1>JavaScript is disabled</h1>
+        <p>This application requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
+      </div>
+    </noscript>
+    
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Load main script with module type and async -->
+    <script type="module" src="/src/main.tsx" crossorigin="anonymous" async></script>
+    
+    <!-- Fallback for older browsers -->
+    <script>
+      // Check for ES module support
+      if (!('noModule' in HTMLScriptElement.prototype)) {
+        // Load polyfill or show message
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/es-module-shims@1.8.0/dist/es-module-shims.min.js';
+        script.integrity = 'sha384-...';
+        script.crossOrigin = 'anonymous';
+        document.head.appendChild(script);
+      }
+    </script>
   </body>
 </html>
