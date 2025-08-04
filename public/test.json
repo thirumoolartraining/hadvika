@@ -1,0 +1,5 @@
+{
+  "test": "This is a test JSON file",
+  "purpose": "To verify MIME type handling for JSON files",
+  "status": "active"
+}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIME Type Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .test {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .pass {
+      background-color: #e6f7e6;
+      border-color: #4CAF50;
+    }
+    .fail {
+      background-color: #ffebee;
+      border-color: #f44336;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .pass::before {
+      content: "✓ ";
+      color: #4CAF50;
+    }
+    .fail::before {
+      content: "✗ ";
+      color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <h1>MIME Type Test Page</h1>
+  <p>This page helps diagnose MIME type issues on your deployment.</p>
+  
+  <div id="test1" class="test">
+    <h3>Test 1: Basic JavaScript Module</h3>
+    <p>Attempting to load a simple JavaScript module...</p>
+    <div id="test1-result" class="result">Running test...</div>
+  </div>
+
+  <div id="test2" class="test">
+    <h3>Test 2: Dynamic Import</h3>
+    <p>Testing dynamic imports...</p>
+    <div id="test2-result" class="result">Running test...</div>
+  </div>
+
+  <div id="test3" class="test">
+    <h3>Test 3: Fetch API</h3>
+    <p>Testing fetch API with different content types...</p>
+    <div id="test3-result" class="result">Running test...</div>
+  </div>
+
+  <div id="test4" class="test">
+    <h3>Test 4: Check MIME Types</h3>
+    <p>Verifying MIME types for different file types...</p>
+    <div id="test4-result" class="result">Running test...</div>
+  </div>
+
+  <script>
+    // Test 1: Basic JavaScript Module
+    (async () => {
+      const test1El = document.getElementById('test1');
+      const result1El = document.getElementById('test1-result');
+      
+      try {
+        // Try to import a simple module
+        const module = await import('./test-module.js');
+        test1El.classList.add('pass');
+        result1El.textContent = 'Success! JavaScript modules are working correctly.';
+        result1El.innerHTML += `<br><small>Module returned: ${module.hello()}</small>`;
+      } catch (error) {
+        test1El.classList.add('fail');
+        result1El.textContent = `Error: ${error.message}`;
+        result1El.innerHTML += `<br><small>This suggests there's an issue with how JavaScript modules are being served.</small>`;
+      }
+    })();
+
+    // Test 2: Dynamic Import
+    (async () => {
+      const test2El = document.getElementById('test2');
+      const result2El = document.getElementById('test2-result');
+      
+      try {
+        // Try dynamic import
+        const dynamicModule = await import('./test-dynamic.js');
+        test2El.classList.add('pass');
+        result2El.textContent = 'Success! Dynamic imports are working.';
+        result2El.innerHTML += `<br><small>Dynamic module returned: ${dynamicModule.greeting()}</small>`;
+      } catch (error) {
+        test2El.classList.add('fail');
+        result2El.textContent = `Error: ${error.message}`;
+        result2El.innerHTML += `<br><small>This suggests there's an issue with dynamic imports.</small>`;
+      }
+    })();
+
+    // Test 3: Fetch API
+    (async () => {
+      const test3El = document.getElementById('test3');
+      const result3El = document.getElementById('test3-result');
+      
+      try {
+        // Test fetching different file types
+        const tests = [
+          { url: './test-module.js', type: 'application/javascript' },
+          { url: './test.json', type: 'application/json' },
+          { url: './test.txt', type: 'text/plain' }
+        ];
+        
+        let results = [];
+        
+        for (const test of tests) {
+          const response = await fetch(test.url);
+          const contentType = response.headers.get('content-type');
+          const isCorrectType = contentType && contentType.includes(test.type);
+          
+          results.push({
+            url: test.url,
+            expected: test.type,
+            actual: contentType || 'unknown',
+            passed: isCorrectType
+          });
+        }
+        
+        const allPassed = results.every(r => r.passed);
+        
+        if (allPassed) {
+          test3El.classList.add('pass');
+          result3El.textContent = 'Success! All MIME types are correct.';
+        } else {
+          test3El.classList.add('fail');
+          result3El.textContent = 'Some MIME types are incorrect:';
+          
+          results.forEach(r => {
+            result3El.innerHTML += `
+              <div style="margin-top: 10px;">
+                <strong>${r.url}:</strong><br>
+                Expected: ${r.expected}<br>
+                Actual: ${r.actual}<br>
+                Status: ${r.passed ? '✅ Passed' : '❌ Failed'}
+              </div>
+            `;
+          });
+        }
+      } catch (error) {
+        test3El.classList.add('fail');
+        result3El.textContent = `Error: ${error.message}`;
+      }
+    })();
+
+    // Test 4: Check MIME Types
+    (async () => {
+      const test4El = document.getElementById('test4');
+      const result4El = document.getElementById('test4-result');
+      
+      try {
+        // Test different file extensions
+        const files = [
+          { url: '/src/main.tsx', type: 'application/javascript' },
+          { url: '/vite.svg', type: 'image/svg+xml' },
+          { url: '/assets/index.css', type: 'text/css' }
+        ];
+        
+        let results = [];
+        
+        for (const file of files) {
+          try {
+            const response = await fetch(file.url);
+            if (!response.ok) {
+              results.push({
+                url: file.url,
+                status: 'Not Found',
+                contentType: 'N/A',
+                passed: false
+              });
+              continue;
+            }
+            
+            const contentType = response.headers.get('content-type') || 'unknown';
+            const isCorrectType = contentType.includes(file.type);
+            
+            results.push({
+              url: file.url,
+              status: response.status,
+              contentType: contentType,
+              passed: isCorrectType
+            });
+          } catch (error) {
+            results.push({
+              url: file.url,
+              status: 'Error',
+              contentType: error.message,
+              passed: false
+            });
+          }
+        }
+        
+        const allPassed = results.every(r => r.passed);
+        
+        if (allPassed) {
+          test4El.classList.add('pass');
+          result4El.textContent = 'Success! All file types are served with correct MIME types.';
+        } else {
+          test4El.classList.add('fail');
+          result4El.textContent = 'Some files have incorrect MIME types or are not found:';
+          
+          results.forEach(r => {
+            result4El.innerHTML += `
+              <div style="margin-top: 10px;">
+                <strong>${r.url}:</strong><br>
+                Status: ${r.status}<br>
+                Content-Type: ${r.contentType}<br>
+                ${r.passed ? '✅ Correct MIME type' : '❌ Incorrect MIME type or file not found'}
+              </div>
+            `;
+          });
+        }
+      } catch (error) {
+        test4El.classList.add('fail');
+        result4El.textContent = `Error: ${error.message}`;
+      }
+    })();
+  </script>
+</body>
+</html>

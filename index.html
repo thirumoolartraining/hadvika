@@ -1,33 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <base href="/" />
-    
-    <!-- Essential Meta Tags -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Hadvika Traders - Premium B2B Ice Cream Export" />
     <meta name="theme-color" content="#215C4C" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
     <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
-    <!-- Preload critical resources -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
-    
-    <!-- Preload main script -->
-    <link rel="modulepreload" href="/src/main.tsx" as="script" crossorigin="anonymous">
-    
-    <!-- Critical CSS (optional, can be inlined) -->
+    <!-- Critical CSS -->
     <style>
       /* Critical CSS for initial load */
       body, html {
@@ -35,13 +24,41 @@
         padding: 0;
         height: 100%;
         overflow-x: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       #root {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
       }
-      /* Add any critical styles needed for initial paint */
+      /* Loading indicator */
+      .app-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f8f9fa;
+        z-index: 9999;
+      }
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #215C4C;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
     </style>
     
     <title>Hadvika Traders | Premium B2B Ice Cream Export</title>
@@ -49,27 +66,49 @@
   <body>
     <noscript>
       <div style="text-align: center; padding: 2rem; font-family: Arial, sans-serif;">
-        <h1>JavaScript is disabled</h1>
+        <h1>JavaScript is required</h1>
         <p>This application requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
       </div>
     </noscript>
+
+    <div id="root">
+      <div class="app-loading">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+
+    <!-- Load main script -->
+    <script type="module" src="/src/main.tsx"></script>
     
-    <div id="root"></div>
-    
-    <!-- Load main script with module type and async -->
-    <script type="module" src="/src/main.tsx" crossorigin="anonymous" async></script>
-    
-    <!-- Fallback for older browsers -->
+    <!-- Error boundary for module loading -->
     <script>
-      // Check for ES module support
-      if (!('noModule' in HTMLScriptElement.prototype)) {
-        // Load polyfill or show message
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/es-module-shims@1.8.0/dist/es-module-shims.min.js';
-        script.integrity = 'sha384-...';
-        script.crossOrigin = 'anonymous';
-        document.head.appendChild(script);
-      }
+      window.addEventListener('error', function(event) {
+        console.error('Script error:', event);
+        const loadingEl = document.querySelector('.app-loading');
+        if (loadingEl) {
+          loadingEl.innerHTML = `
+            <div style="text-align: center; padding: 2rem; max-width: 600px; margin: 0 auto;">
+              <h2>Application Error</h2>
+              <p>Sorry, we're having trouble loading the application. Please try refreshing the page.</p>
+              <p><small>${event.message || 'Unknown error occurred'}</small></p>
+              <button onclick="window.location.reload()" style="
+                background: #215C4C;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 1rem;
+              ">Refresh Page</button>
+            </div>
+          `;
+        }
+      });
+
+      // Handle module loading errors
+      window.addEventListener('unhandledrejection', function(event) {
+        console.error('Unhandled promise rejection:', event.reason);
+      });
     </script>
   </body>
 </html>
