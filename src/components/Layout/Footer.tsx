@@ -19,7 +19,21 @@ const Footer: React.FC<FooterProps> = ({ navigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Hadvika Traders</h3>
+            <div className="mb-4">
+              <img 
+                src={`${import.meta.env.BASE_URL}images/logo/logo-white.png`} 
+                alt="Hadvika Traders" 
+                className="h-16 w-auto"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const fallback = document.createElement('h3');
+                  fallback.className = 'text-xl font-bold';
+                  fallback.textContent = 'Hadvika Traders';
+                  target.parentNode?.insertBefore(fallback, target.nextSibling);
+                }}
+              />
+            </div>
             <p className="text-gray-300 mb-4">
               Official global distributor of Arun Ice Creams, serving premium frozen desserts to international markets.
             </p>

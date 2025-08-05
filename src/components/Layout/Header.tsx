@@ -29,9 +29,21 @@ const Header: React.FC<HeaderProps> = ({ currentPath, navigate }) => {
           <div className="flex-shrink-0">
             <button
               onClick={() => navigate('/')}
-              className="text-xl font-bold text-[#2B2B2B] hover:text-[#215C4C] transition-colors"
+              className="flex items-center space-x-2"
             >
-              Hadvika Traders
+              <img 
+                src={`${import.meta.env.BASE_URL}images/logo/logo.png`} 
+                alt="Hadvika Traders" 
+                className="h-16 w-auto"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const fallback = document.createElement('span');
+                  fallback.className = 'text-xl font-bold text-[#2B2B2B] hover:text-[#215C4C] transition-colors';
+                  fallback.textContent = 'Hadvika Traders';
+                  target.parentNode?.insertBefore(fallback, target.nextSibling);
+                }}
+              />
             </button>
           </div>
 
