@@ -41,6 +41,9 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'assets',
       sourcemap: !isProduction,
       minify: isProduction ? 'esbuild' : false,
+      // Ensure all static assets are copied to the dist directory
+      assetsInlineLimit: 0, // Disable inlining of assets to ensure all files are copied
+      copyPublicDir: true,
       rollupOptions: {
         input: resolve(__dirname, 'index.html'),
         output: {
