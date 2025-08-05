@@ -49,28 +49,43 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, navigate, showAddToC
       <div className="aspect-square bg-gradient-to-br from-[#8FCFAE] via-[#F3B7C3] to-[#8FCFAE] relative overflow-hidden">
         {product.images && product.images.length > 0 ? (
           <>
-            <img 
-              src={product.images[0].startsWith('http') ? product.images[0] : `${import.meta.env.BASE_URL}${product.images[0].startsWith('/') ? '' : '/'}${product.images[0]}`} 
-              alt={product.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Fallback to text if image fails to load
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const fallback = document.createElement('div');
-                fallback.className = 'absolute inset-0 flex items-center justify-center';
-                fallback.innerHTML = `
-                  <div class="text-white text-center">
-                    <div class="text-4xl font-bold mb-2">🍦</div>
-                    <div class="text-sm font-semibold opacity-90">
-                      ${product.name.split(' ')[0]}
-                    </div>
-                  </div>
-                `;
-                target.parentNode?.insertBefore(fallback, target.nextSibling);
-              }}
-              loading="lazy"
-            />
+            {(() => {
+              const imagePath = product.images[0];
+              const baseUrl = import.meta.env.BASE_URL || '';
+              // Remove any leading slashes from the image path to prevent double slashes
+              const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+              const fullUrl = imagePath.startsWith('http') 
+                ? imagePath 
+                : `${baseUrl}${cleanPath}`;
+              
+              console.log('Product:', product.name, 'Image path:', imagePath, 'Base URL:', baseUrl, 'Full URL:', fullUrl);
+              
+              return (
+                <img 
+                  src={fullUrl}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    console.error('Error loading image for', product.name, ':', imagePath, 'Full URL:', fullUrl, 'Error:', e);
+                    // Fallback to text if image fails to load
+                    target.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'absolute inset-0 flex items-center justify-center';
+                    fallback.innerHTML = `
+                      <div class="text-white text-center">
+                        <div class="text-4xl font-bold mb-2">🍦</div>
+                        <div class="text-sm font-semibold opacity-90">
+                          ${product.name.split(' ')[0]}
+                        </div>
+                      </div>
+                    `;
+                    target.parentNode?.insertBefore(fallback, target.nextSibling);
+                  }}
+                  loading="lazy"
+                />
+              );
+            })()}
             {/* Hover Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
           </>
