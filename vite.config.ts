@@ -27,9 +27,13 @@ export default defineConfig(({ mode }) => {
     },
     base: env.VITE_BASE_PATH || '/',
     publicDir: 'public',
+    // Server configuration
     server: {
       port: 3001,
       strictPort: true,
+      headers: {
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
       open: !process.env.CI,
       host: true,
       fs: {
