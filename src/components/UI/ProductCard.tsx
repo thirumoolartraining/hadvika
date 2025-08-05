@@ -47,17 +47,42 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, navigate, showAddToC
     >
       {/* Product Image */}
       <div className="aspect-square bg-gradient-to-br from-[#8FCFAE] via-[#F3B7C3] to-[#8FCFAE] relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-white text-center">
-            <div className="text-4xl font-bold mb-2">🍦</div>
-            <div className="text-sm font-semibold opacity-90">
-              {product.name.split(' ')[0]}
+        {product.images && product.images.length > 0 ? (
+          <>
+            <img 
+              src={product.images[0]} 
+              alt={product.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to text if image fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'absolute inset-0 flex items-center justify-center';
+                fallback.innerHTML = `
+                  <div class="text-white text-center">
+                    <div class="text-4xl font-bold mb-2">🍦</div>
+                    <div class="text-sm font-semibold opacity-90">
+                      ${product.name.split(' ')[0]}
+                    </div>
+                  </div>
+                `;
+                target.parentNode?.insertBefore(fallback, target.nextSibling);
+              }}
+            />
+            {/* Hover Overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
+          </>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-white text-center">
+              <div className="text-4xl font-bold mb-2">🍦</div>
+              <div className="text-sm font-semibold opacity-90">
+                {product.name.split(' ')[0]}
+              </div>
             </div>
           </div>
-        </div>
-        
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
+        )}
       </div>
       
       {/* Product Info */}
