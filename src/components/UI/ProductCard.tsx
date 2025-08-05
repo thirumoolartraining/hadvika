@@ -50,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, navigate, showAddToC
         {product.images && product.images.length > 0 ? (
           <>
             <img 
-              src={product.images[0]} 
+              src={product.images[0].startsWith('http') ? product.images[0] : `${import.meta.env.BASE_URL}${product.images[0]}`} 
               alt={product.name}
               className="w-full h-full object-cover"
               onError={(e) => {
@@ -69,6 +69,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, navigate, showAddToC
                 `;
                 target.parentNode?.insertBefore(fallback, target.nextSibling);
               }}
+              loading="lazy"
             />
             {/* Hover Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />

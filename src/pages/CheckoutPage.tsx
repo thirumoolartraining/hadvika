@@ -128,13 +128,14 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="companyName" className="block text-sm font-medium text-[#2B2B2B] mb-2">
+                  <label htmlFor="contactName" className="block text-sm font-medium text-[#2B2B2B] mb-2">
                     Full Name *
                   </label>
                   <input
                     type="text"
                     id="contactName"
                     name="contactName"
+                    autoComplete="name"
                     required
                     value={formData.contactName}
                     onChange={handleInputChange}
@@ -144,18 +145,18 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-[#2B2B2B] mb-2">
-                    Email Address *
+                  <label htmlFor="companyName" className="block text-sm font-medium text-[#2B2B2B] mb-2">
+                    Company Name
                   </label>
                   <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
+                    type="text"
+                    id="companyName"
+                    name="companyName"
+                    autoComplete="organization"
+                    value={formData.companyName}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#8FCFAE] focus:border-transparent"
-                    placeholder="your@email.com"
+                    placeholder="Your company name (optional)"
                   />
                 </div>
               </div>
@@ -169,6 +170,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
                     type="email"
                     id="email"
                     name="email"
+                    autoComplete="email"
                     required
                     value={formData.email}
                     onChange={handleInputChange}
@@ -185,6 +187,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
                     type="tel"
                     id="phone"
                     name="phone"
+                    autoComplete="tel"
                     required
                     value={formData.phone}
                     onChange={handleInputChange}
@@ -195,18 +198,19 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
               </div>
               
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-[#2B2B2B] mb-2">
-                  Phone Number *
+                <label htmlFor="address" className="block text-sm font-medium text-[#2B2B2B] mb-2">
+                  Delivery Address *
                 </label>
                 <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
+                  type="text"
+                  id="address"
+                  name="address"
+                  autoComplete="street-address"
                   required
-                  value={formData.phone}
+                  value={formData.address}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#8FCFAE] focus:border-transparent"
-                  placeholder="+91 9944311934"
+                  placeholder="123 Main St, City, Country"
                 />
               </div>
               
@@ -215,14 +219,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
                   Delivery Address *
                 </label>
                 <textarea
-                  id="address"
-                  name="address"
+                  id="message"
+                  name="message"
                   rows={3}
-                  required
-                  value={formData.address}
+                  value={formData.message}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#8FCFAE] focus:border-transparent resize-none"
-                  placeholder="Full delivery address"
+                  placeholder="Additional delivery instructions or notes (optional)"
                 />
               </div>
               
@@ -230,11 +233,24 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
                 <h3 className="font-medium text-[#2B2B2B] mb-3">Payment Method</h3>
                 <div className="space-y-3">
                   <label className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="paymentMethod" value="cod" className="h-4 w-4 text-[#215C4C] focus:ring-[#8FCFAE]" defaultChecked />
+                    <input 
+                      type="radio" 
+                      id="paymentMethodCod" 
+                      name="paymentMethod" 
+                      value="cod" 
+                      className="h-4 w-4 text-[#215C4C] focus:ring-[#8FCFAE]" 
+                      defaultChecked 
+                    />
                     <span>Cash on Delivery (COD)</span>
                   </label>
                   <label className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="paymentMethod" value="online" className="h-4 w-4 text-[#215C4C] focus:ring-[#8FCFAE]" />
+                    <input 
+                      type="radio" 
+                      id="paymentMethodOnline" 
+                      name="paymentMethod" 
+                      value="online" 
+                      className="h-4 w-4 text-[#215C4C] focus:ring-[#8FCFAE]" 
+                    />
                     <span>Online Payment (Credit/Debit Card, UPI, Net Banking)</span>
                   </label>
                 </div>

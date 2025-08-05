@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => {
     },
     base: env.VITE_BASE_PATH || '/',
     publicDir: 'public',
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp', '**/*.svg', '**/*.avif'],
     // Server configuration
     server: {
       port: 3001,
@@ -45,44 +46,48 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'assets',
       sourcemap: !isProduction,
       minify: isProduction ? 'esbuild' : false,
-      // Ensure all static assets are copied to the dist directory
-      assetsInlineLimit: 0, // Disable inlining of assets to ensure all files are copied
+      // Static asset handling
+      assetsInlineLimit: 4096, // 4kb - files smaller than this will be inlined as base64
       copyPublicDir: true,
       rollupOptions: {
         input: resolve(__dirname, 'index.html'),
         output: {
           manualChunks: (id: string) => {
             if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom')) {
-                return 'vendor_react';
+              if (id.includes('lucide-react')) {
+                return 'vendor_lucide';
               }
               return 'vendor';
             }
           },
           assetFileNames: (assetInfo) => {
-            const name = assetInfo.name || '';
-            const ext = name.split('.').pop()?.toLowerCase() || '';
+            const info = assetInfo.name?.split('.');
+            const ext = info?.[info.length - 1];
             
-            // Preserve product image paths
-            if (name.includes('product images')) {
-              const pathMatch = name.match(/product images[\\/]([^\\/]+[\\/][^\\/]+\.[^.]+)$/);
-              if (pathMatch) {
-                return `assets/product-images/${pathMatch[1].replace(/\\/g, '/')}`;
-              }
-            }
+            if (!ext) return 'assets/[name]-[hash][extname]';
             
-            if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
-              return 'assets/images/[name]-[hash][extname]';
-            }
-            
+            // Font files
             if (['woff', 'woff2', 'eot', 'ttf', 'otf'].includes(ext)) {
-              return 'assets/fonts/[name]-[hash][extname]';
+              return 'assets/fonts/[name][extname]';
             }
             
+            // Image files
+            if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'avif'].includes(ext)) {
+              return 'assets/images/[name][extname]';
+            }
+            
+            // CSS files
+            if (ext === 'css') {
+              return 'assets/css/[name]-[hash][extname]';
+            }
+            
+            // Other assets
             return 'assets/[name]-[hash][extname]';
-          }
-        }
-      }
+          },
+          chunkFileNames: 'assets/js/[name]-[hash].js',
+          entryFileNames: 'assets/js/[name]-[hash].js',
+        },
+      },
     },
     preview: {
       port: 3001,

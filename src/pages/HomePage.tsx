@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Truck, Thermometer, Globe2, MapPin, Users, Package } from 'lucide-react';
+import heroImage from '../assets/images/hero/hero-image.png';
 import { products } from '../data/products';
 import ProductCard from '../components/UI/ProductCard';
 
@@ -45,8 +46,13 @@ const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
             </div>
             
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-[#8FCFAE] to-[#F3B7C3] rounded-3xl flex items-center justify-center text-white text-6xl shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                🍦
+              <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                <img
+                  src={heroImage}
+                  alt="Premium ice cream selection"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
               
               {/* Floating Elements */}
