@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ShoppingCart, Shield, Truck, Award, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { products } from '../data/products';
 import { useCart } from '../contexts/CartContext';
 import ProductCard from '../components/UI/ProductCard';
 
-interface ProductDetailPageProps {
-  navigate: (path: string) => void;
-  productSlug: string;
-}
-
-const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ navigate, productSlug }) => {
+const ProductDetailPage = () => {
+  const { slug: productSlug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'description' | 'ingredients' | 'export'>('description');
   const cart = useCart();
   

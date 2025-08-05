@@ -1,16 +1,15 @@
 import React from 'react';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-interface HeaderProps {
-  currentPath: string;
-  navigate: (path: string) => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ currentPath, navigate }) => {
+const Header = () => {
   const { getTotalItems, setIsCartOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   const navigation = [
     { name: 'Home', path: '/' },
     { name: 'Products', path: '/products' },
@@ -18,6 +17,8 @@ const Header: React.FC<HeaderProps> = ({ currentPath, navigate }) => {
     { name: 'Export', path: '/export' },
     { name: 'Contact', path: '/contact' }
   ];
+  
+  const currentPath = location.pathname;
 
   const totalItems = getTotalItems();
 

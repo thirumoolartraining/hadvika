@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Filter } from 'lucide-react';
 import { products } from '../data/products';
 import ProductCard from '../components/UI/ProductCard';
 
-interface ProductsPageProps {
-  navigate: (path: string) => void;
-}
-
-const ProductsPage: React.FC<ProductsPageProps> = ({ navigate }) => {
+const ProductsPage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [priceFilter, setPriceFilter] = useState<'all' | 'under-330' | '330-350' | 'over-350'>('all');
   const [showFilters, setShowFilters] = useState(false);

@@ -1,12 +1,10 @@
-import React from 'react';
+
 import { X, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 
-interface CartDrawerProps {
-  navigate: (path: string) => void;
-}
-
-const CartDrawer: React.FC<CartDrawerProps> = ({ navigate }) => {
+const CartDrawer = () => {
+  const navigate = useNavigate();
   const { 
     cartItems, 
     isCartOpen, 

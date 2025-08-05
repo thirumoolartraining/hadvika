@@ -1,11 +1,11 @@
-import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
-interface LegalPageProps {
-  navigate: (path: string) => void;
-  pageType: 'privacy-policy' | 'terms-and-conditions' | 'shipping-policy' | 'cancellation-and-refund';
-}
+type LegalPageType = 'privacy-policy' | 'terms-and-conditions' | 'shipping-policy' | 'cancellation-and-refund';
 
-const LegalPage: React.FC<LegalPageProps> = ({ navigate, pageType }) => {
+const LegalPage = () => {
+  const { page } = useParams<{ page: LegalPageType }>();
+  const navigate = useNavigate();
+  const pageType = page as LegalPageType;
   const getContent = () => {
     switch (pageType) {
       case 'privacy-policy':

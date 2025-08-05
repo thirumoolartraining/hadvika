@@ -1,11 +1,9 @@
 import React from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-interface FooterProps {
-  navigate: (path: string) => void;
-}
-
-const Footer: React.FC<FooterProps> = ({ navigate }) => {
+const Footer = () => {
+  const navigate = useNavigate();
   const legalPages = [
     { name: 'Privacy Policy', path: '/privacy-policy' },
     { name: 'Terms & Conditions', path: '/terms-and-conditions' },

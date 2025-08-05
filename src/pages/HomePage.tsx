@@ -1,14 +1,12 @@
-import React from 'react';
+
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Truck, Thermometer, Globe2, MapPin, Users, Package } from 'lucide-react';
 import heroImage from '../assets/images/hero/hero-image.png';
 import { products } from '../data/products';
 import ProductCard from '../components/UI/ProductCard';
 
-interface HomePageProps {
-  navigate: (path: string) => void;
-}
-
-const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
+const HomePage = () => {
+  const navigate = useNavigate();
   const featuredProducts = products.slice(0, 4);
 
   return (

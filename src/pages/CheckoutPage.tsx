@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, MessageCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 
-interface CheckoutPageProps {
-  navigate: (path: string) => void;
-}
-
-const CheckoutPage: React.FC<CheckoutPageProps> = ({ navigate }) => {
+const CheckoutPage = () => {
+  const navigate = useNavigate();
   const { cartItems, getTotalPrice, clearCart } = useCart();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({

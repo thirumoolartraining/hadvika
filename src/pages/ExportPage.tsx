@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Ship, Thermometer, FileText, Globe, ChevronDown, ChevronRight, Download } from 'lucide-react';
 
-interface ExportPageProps {
-  navigate: (path: string) => void;
-}
-
-const ExportPage: React.FC<ExportPageProps> = ({ navigate }) => {
+const ExportPage = () => {
+  const navigate = useNavigate();
   const [openAccordion, setOpenAccordion] = useState<string | null>('incoterms');
 
   const accordionItems = [

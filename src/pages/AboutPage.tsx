@@ -1,11 +1,9 @@
-import React from 'react';
+
+import { useNavigate } from 'react-router-dom';
 import { Award, Users, Truck, Factory } from 'lucide-react';
 
-interface AboutPageProps {
-  navigate: (path: string) => void;
-}
-
-const AboutPage: React.FC<AboutPageProps> = ({ navigate }) => {
+const AboutPage = () => {
+  const navigate = useNavigate();
   const timeline = [
     { 
       year: '2023', 
