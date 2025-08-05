@@ -79,8 +79,20 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate }) => {
             </div>
             
             <div className="relative">
-              <div className="aspect-video bg-gradient-to-br from-[#8FCFAE] to-[#215C4C] rounded-2xl flex items-center justify-center text-white text-6xl shadow-2xl">
-                🏭
+              <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#8FCFAE] to-[#215C4C]">
+                <img 
+                  src={`${import.meta.env.BASE_URL}images/about/brand-story.png`}
+                  alt="Hadvika Traders Brand Story"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'w-full h-full flex items-center justify-center text-white text-6xl bg-gradient-to-br from-[#8FCFAE] to-[#215C4C]';
+                    fallback.textContent = '🏭';
+                    target.parentNode?.insertBefore(fallback, target.nextSibling);
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -140,13 +152,25 @@ const AboutPage: React.FC<AboutPageProps> = ({ navigate }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <div className="aspect-video bg-gradient-to-br from-[#215C4C] to-[#8FCFAE] rounded-2xl flex items-center justify-center text-white text-6xl shadow-2xl">
-                ❄️
-              </div>
-              
-              {/* Temperature Indicator */}
-              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-2 rounded-lg text-[#215C4C] font-bold">
-                -18°C
+              <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#215C4C] to-[#8FCFAE]">
+                <img 
+                  src={`${import.meta.env.BASE_URL}images/about/cold-chain.png`}
+                  alt="Cold Chain Excellence"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'w-full h-full flex items-center justify-center text-white text-6xl bg-gradient-to-br from-[#215C4C] to-[#8FCFAE]';
+                    fallback.textContent = '❄️';
+                    target.parentNode?.insertBefore(fallback, target.nextSibling);
+                  }}
+                />
+                
+                {/* Temperature Indicator */}
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-2 rounded-lg text-[#215C4C] font-bold">
+                  -18°C
+                </div>
               </div>
             </div>
             
