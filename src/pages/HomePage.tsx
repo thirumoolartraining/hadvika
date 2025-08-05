@@ -157,8 +157,20 @@ const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <div className="aspect-video bg-gradient-to-br from-[#8FCFAE] to-[#215C4C] rounded-2xl flex items-center justify-center text-white text-4xl shadow-xl">
-                🌍
+              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-[#8FCFAE] to-[#215C4C]">
+                <img 
+                  src={`${import.meta.env.BASE_URL}images/global-reach/global-reach.png`}
+                  alt="Global Reach & Impact"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'w-full h-full flex items-center justify-center text-white text-4xl';
+                    fallback.textContent = '🌍';
+                    target.parentNode?.insertBefore(fallback, target.nextSibling);
+                  }}
+                />
               </div>
               
               {/* Animated Pins */}
