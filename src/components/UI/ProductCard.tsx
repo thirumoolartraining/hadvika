@@ -50,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, navigate, showAddToC
         {product.images && product.images.length > 0 ? (
           <>
             <img 
-              src={product.images[0].startsWith('http') ? product.images[0] : `${import.meta.env.BASE_URL}${product.images[0]}`} 
+              src={product.images[0].startsWith('http') ? product.images[0] : `${import.meta.env.BASE_URL}${product.images[0].startsWith('/') ? '' : '/'}${product.images[0]}`} 
               alt={product.name}
               className="w-full h-full object-cover"
               onError={(e) => {
